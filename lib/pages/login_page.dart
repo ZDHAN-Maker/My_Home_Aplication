@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -7,50 +8,47 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-//Class Untuk Login
-class _LoginPageState extends State<LoginPage>{
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  bool isLoading = false;
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-    void login() async {
-    setState(() => isLoading = true);
-
-    // TODO: Kirim data ke server
-    await Future.delayed(const Duration(seconds: 2)); // simulasi delay
-
-    setState(() => isLoading = false);
-    Navigator.pushReplacementNamed(context, '/home');
+  void login() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      Navigator.pushReplacementNamed(context, '/home');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login gagal: $e')),
+      );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Login')),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Login", style: Theme.of(context).textTheme.headlineLarge),
-            const SizedBox(height: 20),
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(labelText: "Email"),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 16),
             TextField(
               controller: passwordController,
+              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
-              decoration: const InputDecoration(labelText: "Password"),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: isLoading ? null : login,
-              child: isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text("Login"),
+              onPressed: login,
+              child: const Text('Login'),
             ),
           ],
         ),
