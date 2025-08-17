@@ -1,84 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 
-import './keamanan_page.dart';
-import './status_air_page.dart';
-import './stock_page.dart';
-import './jadwal_page.dart';
-import './login_page.dart';
-
-/// ------------------- Tab Menu Utama -------------------
-class HomeMenuTab extends StatefulWidget {
-  final List<Map<String, dynamic>> cards;
-  const HomeMenuTab({super.key, required this.cards});
-
-  @override
-  State<HomeMenuTab> createState() => _HomeMenuTabState();
-}
-
-class _HomeMenuTabState extends State<HomeMenuTab>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: widget.cards.length,
-      itemBuilder: (context, index) {
-        final card = widget.cards[index];
-        return Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => card['page']),
-                );
-              },
-              child: Card(
-                elevation: 6,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                color: const Color(0xFF415a77),
-                child: Container(
-                  width: double.infinity,
-                  height: 120,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(card['icon'], size: 40, color: Colors.white),
-                      const SizedBox(width: 16),
-                      Text(
-                        card['title'],
-                        style: GoogleFonts.montserrat(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-          ],
-        );
-      },
-    );
-  }
-}
-
-/// ------------------- Halaman Home -------------------
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -87,138 +8,130 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-  File? _capturedImage;
-  final picker = ImagePicker();
-
-  final List<Map<String, dynamic>> _cards = [
-    {'title': 'Keamanan', 'icon': Icons.security, 'page': const KeamananPage()},
-    {'title': 'Status Air', 'icon': Icons.water, 'page': const StatusAirPage()},
-    {'title': 'Stok', 'icon': Icons.inventory, 'page': const StockPage()},
-    {'title': 'Jadwal', 'icon': Icons.schedule, 'page': const JadwalPage()},
+  final List<Map<String, dynamic>> menuItems = [
+    {"title": "Keamanan", "icon": Icons.security},
+    {"title": "Jadwal", "icon": Icons.schedule},
+    {"title": "Stock", "icon": Icons.inventory},
+    {"title": "Status Air", "icon": Icons.water_drop},
+    {"title": "Laporan", "icon": Icons.description},
+    {"title": "Pengaturan", "icon": Icons.settings},
   ];
-
-  late final List<Widget> _pages;
-
-  @override
-  void initState() {
-    super.initState();
-    _pages = [
-      HomeMenuTab(cards: _cards),
-      const Center(
-        child: Text(
-          'Halaman Lain',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-      ),
-    ];
-  }
-
-  Future<void> _openCamera() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
-
-    if (pickedFile != null) {
-      setState(() {
-        _capturedImage = File(pickedFile.path);
-      });
-
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: const Text('Foto Berhasil Diambil'),
-          content: Image.file(_capturedImage!),
-          actions: [
-            TextButton(
-              child: const Text('Tutup'),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-  void _onItemTapped(int index) {
-    setState(() => _selectedIndex = index);
-  }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            backgroundColor: Color(0xFF0d1b2a),
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            const CircleAvatar(
+              backgroundImage: AssetImage("assets/profile.png"), // foto profil
+              radius: 22,
+            ),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text("Selamat Datang,", style: TextStyle(fontSize: 14, color: Colors.grey)),
+                Text("Zidhan 👋", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 🔹 Ringkasan Status (Dashboard Cards)
+            Row(
+              children: [
+                Expanded(
+                  child: Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: const [
+                          Icon(Icons.lock, color: Colors.green, size: 32),
+                          SizedBox(height: 8),
+                          Text("Keamanan", style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text("Aktif", style: TextStyle(color: Colors.grey)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: const [
+                          Icon(Icons.inventory, color: Colors.orange, size: 32),
+                          SizedBox(height: 8),
+                          Text("Stock", style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text("12 item", style: TextStyle(color: Colors.grey)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
 
-        return Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text(
-              _selectedIndex == 0 ? 'MyHome' : 'Menu Lain',
-              style: GoogleFonts.montserrat(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 22,
+            // 🔹 Menu Grid
+            const Text("Menu Utama", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: menuItems.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
               ),
+              itemBuilder: (context, index) {
+                final item = menuItems[index];
+                return InkWell(
+                  onTap: () {
+                    // TODO: arahkan ke halaman sesuai menu
+                  },
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(item["icon"], size: 36, color: Colors.blue),
+                        const SizedBox(height: 8),
+                        Text(item["title"], style: const TextStyle(fontWeight: FontWeight.w600)),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
-            backgroundColor: const Color(0xFF1b263b),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.logout, color: Colors.white),
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.pushReplacementNamed(context, '/login');
-                },
-              ),
-            ],
-          ),
-          body: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF0d1b2a), Color(0xFF1b263b)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: IndexedStack(index: _selectedIndex, children: _pages),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: _openCamera,
-            backgroundColor: Colors.cyan,
-            child: const Icon(Icons.camera_alt, color: Colors.white),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: const Color(0xFF1b263b),
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: Colors.white),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.location_on, color: Colors.white),
-                label: 'Location',
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            selectedItemColor: Colors.cyanAccent,
-            unselectedItemColor: Colors.white70,
-            selectedLabelStyle: GoogleFonts.montserrat(
-              fontWeight: FontWeight.bold,
-            ),
-            unselectedLabelStyle: GoogleFonts.montserrat(
-              fontWeight: FontWeight.w500,
-            ),
-            onTap: _onItemTapped,
-          ),
-        );
-      },
+          ],
+        ),
+      ),
+
+      // 🔹 Floating Action Button
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // aksi cepat misalnya tambah jadwal
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
