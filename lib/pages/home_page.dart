@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           children: [
             const CircleAvatar(
-              backgroundImage: AssetImage("assets/profile.png"), // foto profil
+              backgroundImage: AssetImage('assets/Images/Me.png'), // foto profil
               radius: 22,
             ),
             const SizedBox(width: 12),
