@@ -74,7 +74,7 @@ class KeamananPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(item["icon"] as IconData, size: 40, color: Colors.white),
+                      Icon(item["icon"] as IconData, size: 40, color: Colors.cyanAccent),
                       const SizedBox(height: 8),
                       Text(
                         item["title"] as String,
