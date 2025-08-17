@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import './keamanan_page.dart';
+import './jadwal_page.dart';
+import './stock_page.dart';
+import './login_page.dart';
+import './status_air_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,13 +14,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Map<String, dynamic>> menuItems = [
-    {"title": "Keamanan", "icon": Icons.security},
-    {"title": "Jadwal", "icon": Icons.schedule},
-    {"title": "Stock", "icon": Icons.inventory},
-    {"title": "Status Air", "icon": Icons.water_drop},
-    {"title": "Laporan", "icon": Icons.description},
-    {"title": "Pengaturan", "icon": Icons.settings},
+    {"title": "Keamanan", "icon": Icons.security, "page": const KeamananPage()},
+    {"title": "Jadwal", "icon": Icons.schedule, "page": const JadwalPage()},
+    {"title": "Stock", "icon": Icons.inventory, "page": const StockPage()},
+    {"title": "Status Air", "icon": Icons.water_drop, "page": const StatusAirPage()},
   ];
+
+  bool keamananAktif = true;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           children: [
             const CircleAvatar(
-              backgroundImage: AssetImage('assets/Images/Me.png'), // foto profil
+              backgroundImage: AssetImage('assets/Images/Me.png'),
               radius: 22,
             ),
             const SizedBox(width: 12),
@@ -50,17 +55,31 @@ class _HomePageState extends State<HomePage> {
             Row(
               children: [
                 Expanded(
-                  child: Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: const [
-                          Icon(Icons.lock, color: Colors.green, size: 32),
-                          SizedBox(height: 8),
-                          Text("Keamanan", style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text("Aktif", style: TextStyle(color: Colors.grey)),
-                        ],
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        keamananAktif = !keamananAktif; // toggle aktif/nonaktif
+                      });
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Icon(
+                              keamananAktif ? Icons.lock : Icons.lock_open,
+                              color: keamananAktif ? Colors.green : Colors.red,
+                              size: 32,
+                            ),
+                            const SizedBox(height: 8),
+                            const Text("Keamanan", style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text(
+                              keamananAktif ? "Aktif" : "Nonaktif",
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -101,7 +120,10 @@ class _HomePageState extends State<HomePage> {
                 final item = menuItems[index];
                 return InkWell(
                   onTap: () {
-                    // TODO: arahkan ke halaman sesuai menu
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => item["page"]),
+                    );
                   },
                   borderRadius: BorderRadius.circular(16),
                   child: Container(
