@@ -17,7 +17,8 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.example.my_home"
-    compileSdk = 35
+
+    compileSdk = 36
     ndkVersion = "29.0.13846066"
 
     compileOptions {
@@ -31,10 +32,10 @@ android {
 
     defaultConfig {
         applicationId = "com.example.my_home"
-        minSdkVersion flutter.minSdkVersion            // Minimal SDK untuk NDK
-        targetSdk = 35
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdkVersion(24)           // Minimal SDK untuk NDK
+        targetSdk = 36        // Sama dengan compileSdk
+        versionCode = 1       // Isi sesuai kebutuhan
+        versionName = "1.0"   // Isi sesuai kebutuhan
     }
 
     signingConfigs {
@@ -64,5 +65,5 @@ flutter {
 }
 
 dependencies {
-    implementation("com.google.android.material:material:1.13.0")
+    implementation("com.google.android.material:material:1.12.0")
 }
