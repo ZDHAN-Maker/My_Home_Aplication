@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // Tambahkan import ini
+import 'package:google_fonts/google_fonts.dart'; 
+
 import './keamanan_page.dart';
 import './jadwal_page.dart';
 import './stock_page.dart';
@@ -22,10 +23,11 @@ class _HomePageState extends State<HomePage> {
   ];
 
   bool keamananAktif = true;
+  int stockJumlah = 12;
 
   @override
   Widget build(BuildContext context) {
-    // Definisi tema warna futuristik
+    // 🔹 Tema warna futuristik
     const Color primaryColor = Color(0xFF0D1B2A);
     const Color secondaryColor = Color(0xFF1B263B);
     const Color accentColor = Color(0xFF415A77);
@@ -67,6 +69,18 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            tooltip: "Logout",
+            icon: const Icon(Icons.logout, color: Colors.redAccent),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -76,6 +90,7 @@ class _HomePageState extends State<HomePage> {
             // 🔹 Ringkasan Status (Dashboard Cards)
             Row(
               children: [
+                // Keamanan Card
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
@@ -87,7 +102,8 @@ class _HomePageState extends State<HomePage> {
                       color: accentColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
-                        side: BorderSide(color: highlightColor.withOpacity(0.5), width: 1),
+                        side: BorderSide(
+                            color: highlightColor.withOpacity(0.5), width: 1),
                       ),
                       elevation: 8,
                       shadowColor: highlightColor,
@@ -97,7 +113,9 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Icon(
                               keamananAktif ? Icons.lock : Icons.lock_open,
-                              color: keamananAktif ? Colors.greenAccent : Colors.redAccent,
+                              color: keamananAktif
+                                  ? Colors.greenAccent
+                                  : Colors.redAccent,
                               size: 32,
                             ),
                             const SizedBox(height: 8),
@@ -111,7 +129,9 @@ class _HomePageState extends State<HomePage> {
                             Text(
                               keamananAktif ? "Aktif" : "Nonaktif",
                               style: GoogleFonts.montserrat(
-                                color: keamananAktif ? Colors.greenAccent : Colors.redAccent,
+                                color: keamananAktif
+                                    ? Colors.greenAccent
+                                    : Colors.redAccent,
                                 fontSize: 12,
                               ),
                             ),
@@ -121,12 +141,14 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                // Stock Card
                 Expanded(
                   child: Card(
                     color: accentColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
-                      side: BorderSide(color: highlightColor.withOpacity(0.5), width: 1),
+                      side: BorderSide(
+                          color: highlightColor.withOpacity(0.5), width: 1),
                     ),
                     elevation: 8,
                     shadowColor: highlightColor,
@@ -134,7 +156,8 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
-                          const Icon(Icons.inventory, color: Colors.orange, size: 32),
+                          const Icon(Icons.inventory,
+                              color: Colors.orange, size: 32),
                           const SizedBox(height: 8),
                           Text(
                             "Stock",
@@ -144,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            "12 item",
+                            "$stockJumlah item",
                             style: GoogleFonts.montserrat(
                               color: highlightColor,
                               fontSize: 12,
@@ -222,7 +245,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      ), 
+      ),
     );
   }
 }

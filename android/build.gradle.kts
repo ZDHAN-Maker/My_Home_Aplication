@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Versi AGP terbaru yang cocok dengan Gradle 8.9
+        classpath("com.android.tools.build:gradle:8.5.2")
+    }
+}
+
 allprojects {
     repositories {
         google()

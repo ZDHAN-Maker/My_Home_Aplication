@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart'; // dari flutterfire configure
-import 'pages/login_page.dart';
-import 'pages/home_page.dart';
-
+import 'firebase_options.dart'; 
+import '/pages/login_page.dart';
+import '/pages/home_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -20,8 +19,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'MyHome',
-      initialRoute: '/home', // langsung cek ke home_page.dart
+      title: 'My Home',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      // halaman pertama adalah login
+      initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),

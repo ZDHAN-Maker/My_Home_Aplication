@@ -6,10 +6,10 @@ class SirineDarurat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("SirineDarurat")),
+      appBar: AppBar(title: const Text("Sirine Darurat")),
       body: const Center(
         child: Text(
-          "SirineDarurat",
+          "Sirine Darurat",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),

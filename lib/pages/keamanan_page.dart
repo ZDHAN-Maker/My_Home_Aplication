@@ -13,13 +13,13 @@ class KeamananPage extends StatelessWidget {
   const KeamananPage({super.key});
 
   final List<Map<String, dynamic>> keamananItems = const [
-    {"title": "CCTV", "icon": Icons.videocam, "page": const CCTVPage()},
-    {"title": "Pagar Otomatis", "icon": Icons.garage, "page": const AutomaticWall()},
-    {"title": "Alarm Kebakaran", "icon": Icons.fire_extinguisher, "page": const Alarm()},
-    {"title": "Sensor Gerak", "icon": Icons.sensors, "page": const SensorGerak()},
-    {"title": "Smart Lock", "icon": Icons.lock, "page": const SmartLock()},
-    {"title": "Lampu Otomatis", "icon": Icons.lightbulb, "page": const OtomaticLampu()},
-    {"title": "Sirine Darurat", "icon": Icons.warning, "page": const SirineDarurat()},
+    {"title": "CCTV", "icon": Icons.videocam, "page": CCTVPage()},
+    {"title": "Pagar Otomatis", "icon": Icons.garage, "page": AutomaticWall()},
+    {"title": "Alarm Kebakaran", "icon": Icons.fire_extinguisher, "page": Alarm()},
+    {"title": "Sensor Gerak", "icon": Icons.sensors, "page": SensorGerak()},
+    {"title": "Smart Lock", "icon": Icons.lock, "page": SmartLock()},
+    {"title": "Lampu Otomatis", "icon": Icons.lightbulb, "page": OtomaticLampu()},
+    {"title": "Sirine Darurat", "icon": Icons.warning, "page": SirineDarurat()},
   ];
 
   @override
