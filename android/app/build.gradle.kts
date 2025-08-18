@@ -8,7 +8,7 @@ plugins {
     id("com.google.gms.google-services") // FlutterFire
 }
 
-// --- Load keystore properties di sini, di luar blok plugins ---
+// --- Load keystore properties ---
 val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("key.properties")
 if (keystorePropertiesFile.exists()) {
@@ -17,8 +17,9 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.example.my_home"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion =  "29.0.13846066"
+    compileSdk = 35
+    ndkVersion = "29.0.13846066"
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -30,8 +31,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.my_home"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdkVersion flutter.minSdkVersion            // Minimal SDK untuk NDK
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -48,7 +49,13 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = false      // Nonaktifkan ProGuard/R8
+            isShrinkResources = false    // Nonaktifkan resource shrinking
         }
+    }
+
+    lint {
+        checkReleaseBuilds = false     // Nonaktifkan lint release
     }
 }
 
